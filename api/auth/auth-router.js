@@ -14,7 +14,7 @@ router.post("/register",validateUsername, validatePassword, hashThePassword,(req
 );
 
 //[POST]  /api/auth/login
-router.post("/login", checkUsernameExists, checkPasswordCorrect,(req, res, next) => {
+router.post("/login", checkUsernameExists, checkPasswordCorrect, async (req, res, next) => {
     try {
       res.status(200).json({
         user_id: req.user_id,
@@ -26,5 +26,14 @@ router.post("/login", checkUsernameExists, checkPasswordCorrect,(req, res, next)
     }
   }
 );
+
+router.put('/update', checkUsernameExists, checkPasswordCorrect, async (req, res, next) => {
+    try{
+        const updatedUser = await Users.update(req.user_id, req.body)
+        res.status(201).json(updatedUser)
+    }catch (err){
+        next(err)
+    }
+})
 
 module.exports = router;
