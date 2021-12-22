@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { JWT_SECRET } = require("./../secrets/index");
-const { tokenBuilder } = require("./../auth/tokenBuilder");
+const { tokenBuilder } = require("../auth/tokenBuilder");
 const Users = require("./../models/users-model");
 
 //access middleware
@@ -20,17 +20,6 @@ const restricted = (req, res, next) => {
     req.decodedToken = decodedToken;
     return next();
   });
-};
-
-const only = (role_type) => (req, res, next) => {
-  if (req.decodedToken.role_type === role_type) {
-    next();
-  } else {
-    next({
-      status: 401,
-      message: "You do not have the correct permissions for that",
-    });
-  }
 };
 
 //validation middleware
@@ -72,16 +61,6 @@ const validatePassword = (req, res, next) => {
   }
 };
 
-const validateRoleType = (req, res, next) => {
-  const role = req.body.role_id;
-  if (!role || role.trim().length < 1) {
-    req.body.role_id = "client";
-    next();
-  } else {
-    next();
-  }
-};
-
 const checkPasswordCorrect = async (req, res, next) => {
   let { username, password } = req.body;
 
@@ -105,5 +84,5 @@ const hashThePassword = (req, res, next) => {
 };
 
 module.exports = {
-    restricted, only, checkUsernameExists, validateUsername, validatePassword, validateRoleType, checkPasswordCorrect, hashThePassword,
+    restricted, checkUsernameExists, validateUsername, validatePassword, checkPasswordCorrect, hashThePassword,
 };
