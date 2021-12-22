@@ -13,7 +13,14 @@ function findBy(filter){
         .first()
 }
 
+function update(id, updated){
+    return db('users')
+        .where('users.user__id', id)
+        .update(updated, ['user_id', 'name', 'picture'])
+}
+
 module.exports = {
     addUser,
-    findBy
+    findBy,
+    update
 }
