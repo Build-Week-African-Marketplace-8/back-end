@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { JWT_SECRET } = require("./../secrets/index");
 const { tokenBuilder } = require("../auth/tokenBuilder");
-const Users = require("./../models/users-model");
+const Users = require("../users/users-model");
 
 //access middleware
 const restricted = (req, res, next) => {
@@ -29,7 +29,6 @@ const checkUsernameExists = async (req, res, next) => {
     next({ status: 404, message: "That username doesn't exist" });
   } else {
     req.user_id = validUsername.user_id
-    req.role_id = validUsername.role_id
     next();
   }
 };
